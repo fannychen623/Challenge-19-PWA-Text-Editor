@@ -11,7 +11,7 @@ const initdb = async () =>
       console.log('jate database created');
     },
   });
-
+  
 // TODO: Add logic to a method that accepts some content and adds it to the database
 export const putDb = async (content)  => {
   console.log('Update the database');
@@ -52,8 +52,16 @@ export const getDb = async () => {
 
   // Get confirmation of the request.
   const result = await request;
-  console.log('result.value', result[0].content);
-  return result[0].content;
+
+  request.onsuccess = async function () {
+    console.log('result.value', result[0].content);
+    return result[0].content;;
+  };
+
+  request.onerror = function () { 
+    const result = null;
+    return result;
+  };
 };
 
 initdb();
