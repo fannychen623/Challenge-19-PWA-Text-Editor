@@ -4,6 +4,7 @@ import { header } from './header';
 
 export default class {
   constructor() {
+    // Define item from local storage
     const localData = localStorage.getItem('content');
 
     // check if CodeMirror is loaded
@@ -11,6 +12,7 @@ export default class {
       throw new Error('CodeMirror is not loaded');
     }
 
+    // Define CodeMirror settings
     this.editor = CodeMirror(document.querySelector('#main'), {
       value: '',
       mode: 'javascript',
@@ -33,6 +35,7 @@ export default class {
       };
     });
 
+    // Any changes to be stored in the local storage and updated in the database/
     this.editor.on('change', () => {
       localStorage.setItem('content', this.editor.getValue());
       putDb(this.editor.getValue());

@@ -1,12 +1,15 @@
 import { openDB } from 'idb';
 
+// Initiate the database creation
 const initdb = async () =>
   openDB('jate', 1, {
     upgrade(db) {
+      // If the database already exists.
       if (db.objectStoreNames.contains('jate')) {
         console.log('jate database already exists');
         return;
       }
+      // Otherwise, create a new database 'jate'
       db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
       console.log('jate database created');
     },
@@ -25,8 +28,10 @@ export const putDb = async (content)  => {
   // Open up the desired object store.
   const store = tx.objectStore('jate');
 
+  // Clear any records in the existing database.
   const clearStore = store.clear();
 
+  // Add a new record to the database.
   const request = store.add({content});
 
   // Get confirmation of the request.
@@ -53,11 +58,13 @@ export const getDb = async () => {
   // Get confirmation of the request.
   const result = await request;
 
+  // If a record exist in the database, return the content value.
   request.onsuccess = async function () {
     console.log('result.value', result[0].content);
     return result[0].content;;
   };
 
+  // If no record exist in the database, return null.
   request.onerror = function () { 
     const result = null;
     return result;
